@@ -44,7 +44,7 @@ $('#pointBtn').click(function() {
     addPoint();
     currentPoint++;
     addLine();
-    $('#pointSelector').append("<option>" + points[currentPoint].name + "</option>");
+    $('#pointSelector').append("<option value='" + currentPoint + "'>" + points[currentPoint].name + "</option>");
 });
 
 function setCanvasSize() {
