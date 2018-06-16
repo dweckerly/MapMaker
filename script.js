@@ -4,43 +4,47 @@ var widthOffset = 30;
 var canvas = document.getElementById('mainCanvas');
 var ctx = canvas.getContext('2d');
 
-var points = [];
 var currentPoint = -1;
+var currentLine = -1;
+var points = [];
+var lines = [];
+
 
 var dragging = false;
 
-$(document).ready(function () {
+$(document).ready(function() {
     setCanvasSize();
 });
 
-$(window).resize(function () {
+$(window).resize(function() {
     setCanvasSize();
 });
 
-$('#mainCanvas').mousedown(function () {
-    if(points.length > 0) {
-        if(onPoint(points[currentPoint])) {
+$('#mainCanvas').mousedown(function() {
+    if (points.length > 0) {
+        if (onPoint(points[currentPoint])) {
             dragging = true;
         }
     }
 });
 
-$('#mainCanvas').mouseleave(function () {
-    if(dragging) {
+$('#mainCanvas').mouseleave(function() {
+    if (dragging) {
         dragging = false;
     }
 });
 
-$('#mainCanvas').mouseup(function () {
-    if(dragging) {
+$('#mainCanvas').mouseup(function() {
+    if (dragging) {
         dragging = false;
     }
 });
 
-$('#createSelector').change(function () {
-    if($('#createSelector').val() == 'newPoint') {
+$('#createSelector').change(function() {
+    if ($('#createSelector').val() == 'newPoint') {
         addPoint();
         currentPoint++;
+        addLine();
         $('#pointSelector').append("<option>" + points[currentPoint].name + "</option>");
         $('#pointSelector').val(points[currentPoint].name);
         $('#createSelector').val("");
@@ -48,8 +52,14 @@ $('#createSelector').change(function () {
 });
 
 function setCanvasSize() {
-    canvas.width =  $(window).width() - widthOffset;
+    canvas.width = $(window).width() - widthOffset;
     canvas.height = $(window).height() - heightOffset;
+}
+
+function clearCanvas() {
+    points.pop();
+    lines.pop();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 function addPoint(x = (canvas.width / 2), y = (canvas.height / 2)) {
@@ -58,13 +68,23 @@ function addPoint(x = (canvas.width / 2), y = (canvas.height / 2)) {
     points.push(point);
 }
 
-function removePoint() {
-    ctx.clearRect(points[currentPoint].x, points[currentPoint].y, points[currentPoint].w, points[currentPoint].h);
-    points.pop();
+function addLine(p1 = points[currentPoint - 1], p2 = points[currentPoint]) {
+    if (points.length > 1) {
+        var line = new Line(p1, p2);
+        lines.push(line);
+    }
 }
 
-function addLine() {
-
+function redaw() {
+    for (var i = 0; i < points.length; i++) {
+        ctx.fillRect(points[i].x, points[i].y, points[i].w, points[i].h);
+        if (i > 0) {
+            ctx.beginPath();
+            ctx.moveTo(points[i - 1].x, points[i - 1].y);
+            ctx.lineTo(points[i].x, points[i].y);
+            ctx.stroke();
+        }
+    }
 }
 
 onmousemove = function(evt) {
@@ -72,14 +92,16 @@ onmousemove = function(evt) {
     mouseX = evt.clientX - rect.left;
     mouseY = evt.clientY - rect.top;
 
-    if(dragging) {
-        removePoint();
+    if (dragging) {
+        clearCanvas();
+        redaw();
         addPoint(mouseX, mouseY);
+        addLine();
     }
 }
 
 function onPoint(rect) {
-    if(
+    if (
         mouseX <= rect.x + rect.w &&
         mouseX >= rect.x &&
         mouseY <= rect.y + rect.h &&
@@ -90,4 +112,3 @@ function onPoint(rect) {
         return false;
     }
 }
-
