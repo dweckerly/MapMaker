@@ -40,15 +40,11 @@ $('#mainCanvas').mouseup(function() {
     }
 });
 
-$('#createSelector').change(function() {
-    if ($('#createSelector').val() == 'newPoint') {
-        addPoint();
-        currentPoint++;
-        addLine();
-        $('#pointSelector').append("<option>" + points[currentPoint].name + "</option>");
-        $('#pointSelector').val(points[currentPoint].name);
-        $('#createSelector').val("");
-    }
+$('#pointBtn').click(function() {
+    addPoint();
+    currentPoint++;
+    addLine();
+    $('#pointSelector').append("<option>" + points[currentPoint].name + "</option>");
 });
 
 function setCanvasSize() {
@@ -72,17 +68,22 @@ function addLine(p1 = points[currentPoint - 1], p2 = points[currentPoint]) {
     if (points.length > 1) {
         var line = new Line(p1, p2);
         lines.push(line);
+        drawLine(line);
     }
+}
+
+function drawLine(line) {
+    ctx.beginPath();
+    ctx.moveTo(line.startX, line.startY);
+    ctx.lineTo(line.endX, line.endY);
+    ctx.stroke();
 }
 
 function redaw() {
     for (var i = 0; i < points.length; i++) {
         ctx.fillRect(points[i].x, points[i].y, points[i].w, points[i].h);
         if (i > 0) {
-            ctx.beginPath();
-            ctx.moveTo(points[i - 1].x, points[i - 1].y);
-            ctx.lineTo(points[i].x, points[i].y);
-            ctx.stroke();
+            drawLine(lines[i - 1]);
         }
     }
 }

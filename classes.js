@@ -10,13 +10,11 @@ class Point {
 
 class Line {
     constructor(p1, p2) {
-        this.startX = p1.x;
-        this.startY = p1.y;
-        this.endX = p2.x;
-        this.endY = p2.y;
-        ctx.beginPath();
-        ctx.moveTo(p1.x, p1.y);
-        ctx.lineTo(p2.x, p2.y);
-        ctx.stroke();
+        this.startPoint = p1;
+        this.endPoint = p2;
+        this.startX = p1.x + (p1.w / 2);
+        this.startY = p1.y + (p1.y / 2);
+        this.endX = p2.x + (p2.w / 2);
+        this.endY = p2.y + (p2.y / 2);
     }
 }

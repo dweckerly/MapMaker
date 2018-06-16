@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Map Test</title>
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 </head>
+
 <body>
     <div id="uiWrapper">
-        <label>Create</label>
-        <select id="createSelector">
-            <option value=""></option>
-            <option value="newPoint">Create new point</option>
-            <option value="newLine">Create new line</option>
-        </select>
+        <button id="pointBtn">Create new point</button>
+        <button id="lineBtn">Create new line</button>
         <label>Points</label>
         <select id="pointSelector"></select>
         <label>Lines</label>
@@ -23,4 +21,5 @@
 </body>
 <script src="classes.js"></script>
 <script src="script.js"></script>
+
 </html>
