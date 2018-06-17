@@ -58,8 +58,6 @@ onmousemove = function(evt) {
     if (dragging) {
         clearCanvas();
         redaw(mouseX, mouseY);
-        addPoint(mouseX, mouseY);
-        addLine();
     }
 }
 
@@ -79,15 +77,12 @@ function onPoint(rect) {
 $('#createPointBtn').click(function() {
     addPoint();
     currentPoint++;
-    addLine();
     $('#pointSelector').append("<option value='" + currentPoint + "'>" + points[currentPoint].name + "</option>");
     $('#fromPointSelector').append("<option value='" + currentPoint + "'>" + points[currentPoint].name + "</option>");
     $('#toPointSelector').append("<option value='" + currentPoint + "'>" + points[currentPoint].name + "</option>");
     $('#toPointSelector').val(currentPoint);
     if (points.length > 1) {
         $('#removeLineBtn').prop("disabled", false);
-    }
-    if (points.length > 2) {
         $('#createLineBtn').prop("disabled", false);
     }
 });
@@ -108,8 +103,6 @@ function setCanvasSize() {
 }
 
 function clearCanvas() {
-    points.pop();
-    lines.pop();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
@@ -152,7 +145,6 @@ function redaw(x, y) {
             drawLine(lines[i]);
         }
     }
-
 }
 
 
