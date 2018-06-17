@@ -8,12 +8,15 @@
 
 <body>
     <div id="uiWrapper">
-        <button id="pointBtn">Create new point</button>
-        <button id="lineBtn">Create new line</button>
-        <label>Points</label>
+        <button id="createPointBtn">Create point</button>
+        <button id="removePointBtn">Remove point</button>
         <select id="pointSelector"></select>
-        <label>Lines</label>
-        <select id="lineSelector"></select>
+        <button id="createLineBtn">Create line</button>
+        <button id="removeLineBtn">Remove line</button>
+        <label>From</label>
+        <select id="fromPointSelector"></select>
+        <label>To</label>
+        <select id="toPointSelector"></select>
     </div>
     <div id="canvasWrapper">
         <canvas id="mainCanvas" style="border:1px solid #000;"></canvas>
