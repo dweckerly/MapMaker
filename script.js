@@ -6,6 +6,9 @@ var ctx = canvas.getContext('2d');
 
 var currentPoint = -1;
 var currentLine = -1;
+var selectedPoint;
+var selectedLine = 0;
+
 var points = [];
 var lines = [];
 
@@ -14,6 +17,7 @@ var dragging = false;
 
 $(document).ready(function() {
     setCanvasSize();
+    $('#lineBtn').prop("disabled", true);
 });
 
 $(window).resize(function() {
@@ -45,6 +49,15 @@ $('#pointBtn').click(function() {
     currentPoint++;
     addLine();
     $('#pointSelector').append("<option value='" + currentPoint + "'>" + points[currentPoint].name + "</option>");
+    $('#pointSelector').val(currentPoint);
+    if (points.length > 2) {
+        $('#lineBtn').prop("disabled", false);
+    }
+});
+
+$('#pointSelector').change(function() {
+    var selection = $('#pointSelector').val();
+    highlightPoint(points[selection]);
 });
 
 function setCanvasSize() {
@@ -82,10 +95,14 @@ function drawLine(line) {
 function redaw() {
     for (var i = 0; i < points.length; i++) {
         ctx.fillRect(points[i].x, points[i].y, points[i].w, points[i].h);
-        if (i > 0) {
-            drawLine(lines[i - 1]);
+        if (lines[i]) {
+            drawLine(lines[i]);
+        }
+        if (selectedPoint) {
+            highlightPoint(selectedPoint);
         }
     }
+
 }
 
 onmousemove = function(evt) {
@@ -112,4 +129,16 @@ function onPoint(rect) {
     } else {
         return false;
     }
+}
+
+function highlightPoint(p) {
+    selectedPoint = p;
+    ctx.beginPath();
+    ctx.lineWidth = "3";
+    ctx.strokeStyle = "red";
+    ctx.rect(p.x - 1, p.y - 1, p.w + 2, p.h + 2);
+    ctx.stroke();
+    // reset to default
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = "1";
 }
