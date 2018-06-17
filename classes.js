@@ -11,9 +11,7 @@ class Point {
 class Line {
     constructor(p1, p2) {
         this.startPoint = p1;
-        this.startPointIndex;
         this.endPoint = p2;
-        this.endPointIndex;
         this.startX = p1.x + (p1.w / 2);
         this.startY = p1.y + (p1.h / 2);
         this.endX = p2.x + (p2.w / 2);
