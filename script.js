@@ -91,10 +91,24 @@ $('#removePointBtn').click(function() {
 
 });
 
+$('#removeLineBtn').click(function() {
+
+});
+
 $('#createLineBtn').click(function() {
+    var duplicate = false;
     var fromPoint = points[$('#fromPointSelector').val()];
     var toPoint = points[$('#toPointSelector').val()];
-    addLine(fromPoint, toPoint);
+    if(fromPoint != toPoint) {
+        for(var i = 0; i < lines.length; i++) {
+            if(lines[i].startPoint == points[fromPoint] && lines[i].endPoint == points[toPoint]) {
+                duplicate = true;
+            }
+        }
+        if(!duplicate) {
+            addLine(fromPoint, toPoint);
+        }
+    }
 });
 
 function setCanvasSize() {
@@ -134,13 +148,30 @@ function drawLine(line) {
 }
 
 function redaw(x, y) {
-    for (var i = 0; i < points.length; i++) {
+    var iterations;
+    if(points.length >= lines.length) {
+        iterations = points.length;
+    } else {
+        iterations = lines.length;
+    }
+    for (var i = 0; i < iterations; i++) {
         if (i == selectedPoint) {
+            for(var j = 0; j < lines.length; j++) {
+                if(lines[j].startPoint == points[i]) {
+                    lines[j].startX = x + (points[i].w / 2);
+                    lines[j].startY = y + (points[i].h / 2);
+                }
+                if(lines[j].endPoint == points[i]) {
+                    lines[j].endX = x + (points[i].w / 2);
+                    lines[j].endY = y + (points[i].h / 2);
+                }
+            }
             points[i].x = x;
             points[i].y = y;
         }
-        drawPoint(points[i]);
-        //ctx.fillRect(points[i].x, points[i].y, points[i].w, points[i].h);
+        if(points[i]) {
+            drawPoint(points[i]);
+        }
         if (lines[i]) {
             drawLine(lines[i]);
         }
