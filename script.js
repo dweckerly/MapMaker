@@ -4,8 +4,6 @@ var widthOffset = 30;
 var canvas = document.getElementById('mainCanvas');
 var ctx = canvas.getContext('2d');
 
-var currentPoint = -1;
-var currentLine = -1;
 var selectedPoint;
 
 var points = [];
@@ -73,11 +71,6 @@ function onPoint(rect) {
 
 $('#createPointBtn').click(function() {
     addPoint();
-    currentPoint++;
-    $('#pointSelector').append("<option value='" + currentPoint + "'>" + points[currentPoint].name + "</option>");
-    $('#fromPointSelector').append("<option value='" + currentPoint + "'>" + points[currentPoint].name + "</option>");
-    $('#toPointSelector').append("<option value='" + currentPoint + "'>" + points[currentPoint].name + "</option>");
-    $('#toPointSelector').val(currentPoint);
     if (points.length > 1) {
         $('#removeLineBtn').prop("disabled", false);
         $('#createLineBtn').prop("disabled", false);
@@ -90,6 +83,7 @@ $('#removePointBtn').click(function() {
             removeLine(lines[i]);
         }
     }
+    removePoint(points[$('#pointSelector').val()]);
 });
 
 $('#removeLineBtn').click(function() {
@@ -130,6 +124,10 @@ function clearCanvas() {
 function addPoint(x = (canvas.width / 2), y = (canvas.height / 2)) {
     var point = new Point(x, y, 20, 20)
     points.push(point);
+    $('#pointSelector').append("<option value='" + points.indexOf(point) + "'>" + points[points.indexOf(point)].name + "</option>");
+    $('#fromPointSelector').append("<option value='" + points.indexOf(point) + "'>" + points[points.indexOf(point)].name + "</option>");
+    $('#toPointSelector').append("<option value='" + points.indexOf(point) + "'>" + points[points.indexOf(point)].name + "</option>");
+    $('#toPointSelector').val(points.indexOf(point));
     drawPoint(point);
 }
 
@@ -139,11 +137,60 @@ function drawPoint(point) {
     ctx.fillText(point.name, point.x, point.y - 16);
 }
 
-function removePoint() {
+function removePoint(point) {
+    var idx = points.indexOf(point);
+    if(idx > -1) {
+        points.splice(idx, 1);
+    }
+    
+    $("#pointSelector option").each(function(index, element) {
+        if($(element).text() == point.name) {
+            element.remove();
+        }
+    });
 
+    $("#fromPointSelector option").each(function(index, element) {
+        if($(element).text() == point.name) {
+            element.remove();
+        }
+    });
+
+    $("#toPointSelector option").each(function(index, element) {
+        if($(element).text() == point.name) {
+            element.remove();
+        }
+    });
+    
+    renamePoints();
+
+    selectedPoint = -1;
+    clearCanvas();
+    redraw();
 }
 
-function addLine(p1 = points[currentPoint - 1], p2 = points[currentPoint]) {
+function renamePoints() {
+    $("#pointSelector option").each(function(index, element) {
+        $(element).val(index);
+        points[index].name = "point-" + index;
+        $(element).text(points[index].name);
+    });
+
+    $("#fromPointSelector option").each(function(index, element) {
+        $(element).val(index);
+        points[index].name = "point-" + index;
+        $(element).text(points[index].name);
+    });
+
+    $("#toPointSelector option").each(function(index, element) {
+        $(element).val(index);
+        points[index].name = "point-" + index;
+        $(element).text(points[index].name);
+    });
+}
+
+// will need to create a method to rename the points...
+
+function addLine(p1, p2) {
     if (points.length > 1) {
         var line = new Line(p1, p2);
         lines.push(line);
