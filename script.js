@@ -7,7 +7,6 @@ var ctx = canvas.getContext('2d');
 var currentPoint = -1;
 var currentLine = -1;
 var selectedPoint;
-var selectedLine;
 
 var points = [];
 var lines = [];
@@ -29,7 +28,6 @@ $('#mainCanvas').mousedown(function() {
     if (points.length > 0) {
         for (var i = 0; i < points.length; i++) {
             if (onPoint(points[i])) {
-                console.log("Dragging: " + i);
                 selectedPoint = i;
                 dragging = true;
             }
@@ -54,10 +52,9 @@ onmousemove = function(evt) {
     mouseX = evt.clientX - rect.left;
     mouseY = evt.clientY - rect.top;
 
-    // need to rework this
     if (dragging) {
         clearCanvas();
-        redaw(mouseX, mouseY);
+        redraw(mouseX, mouseY);
     }
 }
 
@@ -88,11 +85,21 @@ $('#createPointBtn').click(function() {
 });
 
 $('#removePointBtn').click(function() {
-
+    for(var i = 0; i < lines.length; i++) {
+        if(lines[i].startPoint == points[$('#pointSelector').val()] || lines[i].endPoint == points[$('#pointSelector').val()]) {
+            removeLine(lines[i]);
+        }
+    }
 });
 
 $('#removeLineBtn').click(function() {
-
+    for(var i = 0; i < lines.length; i++) {
+        if(lines[i].startPoint == points[$('#fromPointSelector').val()] && lines[i].endPoint == points[$('#toPointSelector').val()]){
+            removeLine(lines[i]);
+        } else if(lines[i].startPoint == points[$('#toPointSelector').val()] && lines[i].endPoint == points[$('#fromPointSelector').val()]) {
+            removeLine(lines[i]);
+        }
+    }
 });
 
 $('#createLineBtn').click(function() {
@@ -126,6 +133,16 @@ function addPoint(x = (canvas.width / 2), y = (canvas.height / 2)) {
     drawPoint(point);
 }
 
+function drawPoint(point) {
+    ctx.fillRect(point.x, point.y, point.w, point.h);
+    ctx.font = "16px Arial";
+    ctx.fillText(point.name, point.x, point.y - 16);
+}
+
+function removePoint() {
+
+}
+
 function addLine(p1 = points[currentPoint - 1], p2 = points[currentPoint]) {
     if (points.length > 1) {
         var line = new Line(p1, p2);
@@ -134,10 +151,14 @@ function addLine(p1 = points[currentPoint - 1], p2 = points[currentPoint]) {
     }
 }
 
-function drawPoint(point) {
-    ctx.fillRect(point.x, point.y, point.w, point.h);
-    ctx.font = "16px Arial";
-    ctx.fillText(point.name, point.x, point.y - 16);
+function removeLine(line) {
+    var index = lines.indexOf(line);
+    if(index > -1) {
+        lines.splice(index, 1);
+    }
+    selectedPoint = -1;
+    clearCanvas();
+    redraw();
 }
 
 function drawLine(line) {
@@ -147,7 +168,7 @@ function drawLine(line) {
     ctx.stroke();
 }
 
-function redaw(x, y) {
+function redraw(x = 0, y = 0) {
     var iterations;
     if(points.length >= lines.length) {
         iterations = points.length;
