@@ -19,7 +19,9 @@ $(document).ready(function() {
 });
 
 $(window).resize(function() {
+    selectedPoint = -1;
     setCanvasSize();
+    redraw();
 });
 
 $('#mainCanvas').mousedown(function() {
