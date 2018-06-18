@@ -78,20 +78,26 @@ $('#createPointBtn').click(function() {
 });
 
 $('#removePointBtn').click(function() {
-    for(var i = 0; i < lines.length; i++) {
-        if(lines[i].startPoint == points[$('#pointSelector').val()] || lines[i].endPoint == points[$('#pointSelector').val()]) {
-            removeLine(lines[i]);
+    for(var i = lines.length - 1; i > -1; i--) {
+        if(lines[i]) {
+            if(lines[i].startPoint == points[$('#pointSelector').val()] || lines[i].endPoint == points[$('#pointSelector').val()]) {
+                removeLine(lines[i]);
+            } else if(lines[i].startPoint == points[$('#pointSelector').val()] || lines[i].endPoint == points[$('#pointSelector').val()]) {
+                removeLine(lines[i]);
+            }
         }
     }
     removePoint(points[$('#pointSelector').val()]);
 });
 
 $('#removeLineBtn').click(function() {
-    for(var i = 0; i < lines.length; i++) {
-        if(lines[i].startPoint == points[$('#fromPointSelector').val()] && lines[i].endPoint == points[$('#toPointSelector').val()]){
-            removeLine(lines[i]);
-        } else if(lines[i].startPoint == points[$('#toPointSelector').val()] && lines[i].endPoint == points[$('#fromPointSelector').val()]) {
-            removeLine(lines[i]);
+    for(var i = lines.length - 1; i > -1; i--) {
+        if(lines[i]) {
+            if(lines[i].startPoint == points[$('#fromPointSelector').val()] && lines[i].endPoint == points[$('#toPointSelector').val()]){
+                removeLine(lines[i]);
+            } else if(lines[i].startPoint == points[$('#toPointSelector').val()] && lines[i].endPoint == points[$('#fromPointSelector').val()]) {
+                removeLine(lines[i]);
+            }
         }
     }
 });
@@ -206,6 +212,13 @@ function removeLine(line) {
     selectedPoint = -1;
     clearCanvas();
     redraw();
+}
+
+function removeLines(indices) {
+    indices.sort(function(a, b) {return b-a});
+    indices.forEach(function(index) {
+        removeLine(lines[index])
+    });
 }
 
 function drawLine(line) {
