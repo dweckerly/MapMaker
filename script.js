@@ -196,8 +196,6 @@ function renamePoints() {
     });
 }
 
-// will need to create a method to rename the points...
-
 function addLine(p1, p2) {
     if (points.length > 1) {
         var line = new Line(p1, p2);
