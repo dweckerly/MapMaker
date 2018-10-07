@@ -1,14 +1,28 @@
 var mainInterval;
 
 var points;
-var pointCount = 10;
-var pointDist = 50;
-var pointDistFactor = 18;
-var pointDim = 5;
+var pointCount = 12;
+var pointDist = 120;
+var pointDistFactor = 48;
+var pointDim = 25;
+
+var pathCount = 2;
 
 var direction;
 
-var startingPoint = {x: 0, y: 0};
+var startingPoint = { x: 0, y: 0 };
+
+const types = ["start", "end", "wild", "shop", "rest"]
+
+var node = {
+    x: 0,
+    y: 0,
+    w: 0,
+    h: 0,
+    type: "some identifier for what is here",
+    img: "could reference this with the type but might be simpler just to store here...",
+    paths: []
+}
 
 $('#incPoints').val(pointCount);
 $('#changeDim').val(pointDim);
@@ -18,8 +32,8 @@ function clearCanvas() {
 }
 
 function clearOffset() {
-    cOffset = {x: 0, y: 0};
-    mouseOffset = {x: 0, y: 0};
+    cOffset = { x: 0, y: 0 };
+    mouseOffset = { x: 0, y: 0 };
 }
 
 function draw() {
@@ -30,8 +44,7 @@ function draw() {
 
 function setDirection() {
     let r = Math.floor(Math.random() * 4);
-    console.log(r);
-    switch(r) {
+    switch (r) {
         case 0:
             direction = "east";
             startingPoint.x = pointDim;
@@ -53,55 +66,53 @@ function setDirection() {
             startingPoint.y = c.height - pointDim;
             break;
     }
-    console.log(direction);
 }
 
 function createPoints() {
     clearOffset();
     points = [];
     setDirection();
-    for(let i = 0; i < pointCount; i++) {
+    pointCount = $('#incPoints').val();
+    for (let i = 0; i < pointCount; i++) {
         let rx = Math.round(Math.random() * pointDistFactor * 2) - pointDistFactor;
         let ry = Math.round(Math.random() * pointDistFactor * 2) - pointDistFactor;
         switch (direction) {
             case "east":
-                points.push({x: startingPoint.x + pointDist * i + rx, y: startingPoint.y + ry});
+                points.push({ x: startingPoint.x + pointDist * i + rx, y: startingPoint.y + ry });
                 break;
             case "south":
-                points.push({x: startingPoint.x + rx, y: startingPoint.y + pointDist * i + ry});
+                points.push({ x: startingPoint.x + rx, y: startingPoint.y + pointDist * i + ry });
                 break;
             case "west":
-                points.push({x: startingPoint.x - pointDist * i + rx, y: startingPoint.y + ry});
+                points.push({ x: startingPoint.x - pointDist * i + rx, y: startingPoint.y + ry });
                 break;
             case "north":
-                points.push({x: startingPoint.x + rx, y: startingPoint.y - pointDist * i + ry});
+                points.push({ x: startingPoint.x + rx, y: startingPoint.y - pointDist * i + ry });
                 break;
         }
-        
     }
 }
 
 function drawPoints() {
-    for(let i = 0; i < points.length; i++) {
-        if(i == 0 || i == points.length - 1) {
+    for (let i = 0; i < points.length; i++) {
+        if (i == 0 || i == points.length - 1) {
             ctx.fillRect(points[i].x - (pointDim / 2) + cOffset.x, points[i].y - (pointDim / 2) + cOffset.y, pointDim * 2, pointDim * 2);
         } else {
             ctx.fillRect(points[i].x - (pointDim / 2) + cOffset.x, points[i].y - (pointDim / 2) + cOffset.y, pointDim, pointDim);
         }
-   
     }
 }
 
 function drawLines() {
-    for(let i = 0; i < points.length - 1; i++) {
+    for (let i = 0; i < points.length - 1; i++) {
         line(points[i], points[i + 1]);
     }
 }
 
 function line(start, end) {
     ctx.beginPath();
-    ctx.moveTo(start.x + cOffset.x, start.y + + cOffset.y);
-    ctx.lineTo(end.x + cOffset.x, end.y + + cOffset.y);
+    ctx.moveTo(start.x + cOffset.x, start.y + +cOffset.y);
+    ctx.lineTo(end.x + cOffset.x, end.y + +cOffset.y);
     ctx.stroke();
 }
 
@@ -110,9 +121,9 @@ function distance(start, end) {
 }
 
 function logDistanceBetweenPoints() {
-    for(let i = 0; i < points.length; i++) {
-        for(let j = 0; j < points.length; j++) {
-            if(i != j) {
+    for (let i = 0; i < points.length; i++) {
+        for (let j = 0; j < points.length; j++) {
+            if (i != j) {
                 console.log(distance(points[i], points[j]));
             }
         }
