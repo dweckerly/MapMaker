@@ -19,8 +19,8 @@ var node = {
     y: 0,
     w: 0,
     h: 0,
-    type: "some identifier for what is here",
-    img: "could reference this with the type but might be simpler just to store here...",
+    type: "",
+    img: "",
     paths: []
 }
 
@@ -78,19 +78,23 @@ function createPoints() {
         let ry = Math.round(Math.random() * pointDistFactor * 2) - pointDistFactor;
         switch (direction) {
             case "east":
-                points.push({ x: startingPoint.x + pointDist * i + rx, y: startingPoint.y + ry });
+                points.push(new Node(startingPoint.x + pointDist * i + rx, startingPoint.y + ry, pointDim, pointDim, types[2], wildImg, []));
                 break;
             case "south":
-                points.push({ x: startingPoint.x + rx, y: startingPoint.y + pointDist * i + ry });
+                points.push(new Node(startingPoint.x + rx, startingPoint.y + pointDist * i + ry, pointDim, pointDim, types[2], wildImg, []));
                 break;
             case "west":
-                points.push({ x: startingPoint.x - pointDist * i + rx, y: startingPoint.y + ry });
+                points.push(new Node(startingPoint.x - pointDist * i + rx, startingPoint.y + ry, pointDim, pointDim, types[2], wildImg, []));
                 break;
             case "north":
-                points.push({ x: startingPoint.x + rx, y: startingPoint.y - pointDist * i + ry });
+                points.push(new Node(startingPoint.x + rx, startingPoint.y - pointDist * i + ry, pointDim, pointDim, types[2], wildImg, []));
                 break;
         }
     }
+}
+
+function drawNodes() {
+
 }
 
 function drawPoints() {
@@ -98,7 +102,7 @@ function drawPoints() {
         if (i == 0 || i == points.length - 1) {
             ctx.fillRect(points[i].x - (pointDim / 2) + cOffset.x, points[i].y - (pointDim / 2) + cOffset.y, pointDim * 2, pointDim * 2);
         } else {
-            ctx.fillRect(points[i].x - (pointDim / 2) + cOffset.x, points[i].y - (pointDim / 2) + cOffset.y, pointDim, pointDim);
+            ctx.drawImage(points[i].img, points[i].x - (points[i].w / 2) + cOffset.x, points[i].y - (points[i].h / 2) + cOffset.y);
         }
     }
 }
