@@ -78,16 +78,16 @@ function createPoints() {
         let ry = Math.round(Math.random() * pointDistFactor * 2) - pointDistFactor;
         switch (direction) {
             case "east":
-                points.push(new Node(startingPoint.x + pointDist * i + rx, startingPoint.y + ry, pointDim, pointDim, types[2], wildImg, []));
+                points.push(new Node(startingPoint.x + pointDist * i + rx, startingPoint.y + ry, wildImgWidth, wildImgHeight, types[2], wildImg, []));
                 break;
             case "south":
-                points.push(new Node(startingPoint.x + rx, startingPoint.y + pointDist * i + ry, pointDim, pointDim, types[2], wildImg, []));
+                points.push(new Node(startingPoint.x + rx, startingPoint.y + pointDist * i + ry, wildImgWidth, wildImgHeight, types[2], wildImg, []));
                 break;
             case "west":
-                points.push(new Node(startingPoint.x - pointDist * i + rx, startingPoint.y + ry, pointDim, pointDim, types[2], wildImg, []));
+                points.push(new Node(startingPoint.x - pointDist * i + rx, startingPoint.y + ry, wildImgWidth, wildImgHeight, types[2], wildImg, []));
                 break;
             case "north":
-                points.push(new Node(startingPoint.x + rx, startingPoint.y - pointDist * i + ry, pointDim, pointDim, types[2], wildImg, []));
+                points.push(new Node(startingPoint.x + rx, startingPoint.y - pointDist * i + ry, wildImgWidth, wildImgHeight, types[2], wildImg, []));
                 break;
         }
     }
@@ -115,8 +115,8 @@ function drawLines() {
 
 function line(start, end) {
     ctx.beginPath();
-    ctx.moveTo(start.x + cOffset.x, start.y + +cOffset.y);
-    ctx.lineTo(end.x + cOffset.x, end.y + +cOffset.y);
+    ctx.moveTo(start.x + cOffset.x, start.y + cOffset.y);
+    ctx.lineTo(end.x + cOffset.x, end.y + cOffset.y);
     ctx.stroke();
 }
 

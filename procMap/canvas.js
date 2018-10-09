@@ -9,3 +9,5 @@ var dragging = false;
 
 var wildImg = new Image();
 wildImg.src = 'img/wildIcon.png';
+var wildImgWidth = 29;
+var wildImgHeight = 43;

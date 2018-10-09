@@ -7,6 +7,16 @@ c.addEventListener('mousemove', function(evt) {
         mouseOffset.y = mousePos.y;
         draw();
     }
+    for (let i = 0; i < points.length; i++) {
+        if (mousePos.x >= points[i].x && mousePos.x <= (points[i].x + points[i].w)) {
+            if (mousePos.y >= points[i].y && mousePos.y <= (points[i].y + points[i].h)) {
+                points[i].w = wildImgWidth * 3;
+                points[i].h = wildImgHeight * 3;
+            } else {
+
+            }
+        }
+    }
 }, false);
 
 function getMousePos(c, evt) {
