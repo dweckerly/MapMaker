@@ -1,5 +1,5 @@
 class Node {
-    constructor(x, y, w, h, type, img, paths) {
+    constructor(x, y, w, h, type, img, paths, hover) {
         this.x = x;
         this.y = y;
         this.w = w;
@@ -7,5 +7,6 @@ class Node {
         this.type = type;
         this.img = img;
         this.paths = paths;
+        this.hover = hover;
     }
 }

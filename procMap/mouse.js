@@ -8,15 +8,16 @@ c.addEventListener('mousemove', function(evt) {
         draw();
     }
     for (let i = 0; i < points.length; i++) {
-        if (mousePos.x >= points[i].x && mousePos.x <= (points[i].x + points[i].w)) {
-            if (mousePos.y >= points[i].y && mousePos.y <= (points[i].y + points[i].h)) {
-                points[i].w = wildImgWidth * 3;
-                points[i].h = wildImgHeight * 3;
+        if (mousePos.x >= (points[i].x + cOffset.x - points[i].w) && mousePos.x <= (points[i].x + cOffset.x + points[i].w)) {
+            if (mousePos.y >= (points[i].y + cOffset.y - points[i].h) && mousePos.y <= (points[i].y + cOffset.y + points[i].h)) {
+                points[i].hover = true;
+                console.log("hovering");
             } else {
-
+                points[i].hover = false;
             }
         }
     }
+    
 }, false);
 
 function getMousePos(c, evt) {

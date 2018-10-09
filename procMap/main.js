@@ -78,23 +78,19 @@ function createPoints() {
         let ry = Math.round(Math.random() * pointDistFactor * 2) - pointDistFactor;
         switch (direction) {
             case "east":
-                points.push(new Node(startingPoint.x + pointDist * i + rx, startingPoint.y + ry, wildImgWidth, wildImgHeight, types[2], wildImg, []));
+                points.push(new Node(startingPoint.x + pointDist * i + rx, startingPoint.y + ry, wildImgWidth, wildImgHeight, types[2], wildImg, [], false));
                 break;
             case "south":
-                points.push(new Node(startingPoint.x + rx, startingPoint.y + pointDist * i + ry, wildImgWidth, wildImgHeight, types[2], wildImg, []));
+                points.push(new Node(startingPoint.x + rx, startingPoint.y + pointDist * i + ry, wildImgWidth, wildImgHeight, types[2], wildImg, [], false));
                 break;
             case "west":
-                points.push(new Node(startingPoint.x - pointDist * i + rx, startingPoint.y + ry, wildImgWidth, wildImgHeight, types[2], wildImg, []));
+                points.push(new Node(startingPoint.x - pointDist * i + rx, startingPoint.y + ry, wildImgWidth, wildImgHeight, types[2], wildImg, [], false));
                 break;
             case "north":
-                points.push(new Node(startingPoint.x + rx, startingPoint.y - pointDist * i + ry, wildImgWidth, wildImgHeight, types[2], wildImg, []));
+                points.push(new Node(startingPoint.x + rx, startingPoint.y - pointDist * i + ry, wildImgWidth, wildImgHeight, types[2], wildImg, [], false));
                 break;
         }
     }
-}
-
-function drawNodes() {
-
 }
 
 function drawPoints() {
@@ -102,7 +98,11 @@ function drawPoints() {
         if (i == 0 || i == points.length - 1) {
             ctx.fillRect(points[i].x - (pointDim / 2) + cOffset.x, points[i].y - (pointDim / 2) + cOffset.y, pointDim * 2, pointDim * 2);
         } else {
-            ctx.drawImage(points[i].img, points[i].x - (points[i].w / 2) + cOffset.x, points[i].y - (points[i].h / 2) + cOffset.y);
+            if(points[i].hover) {
+                ctx.drawImage(points[i].img, points[i].x - (points[i].w) + cOffset.x, points[i].y - (points[i].h) + cOffset.y, wildImgWidth * 2, wildImgHeight * 2);
+            } else {
+                ctx.drawImage(points[i].img, points[i].x - (points[i].w / 2) + cOffset.x, points[i].y - (points[i].h / 2) + cOffset.y);
+            }
         }
     }
 }
@@ -149,6 +149,7 @@ $('#changeDim').on("change", () => {
 })
 
 createPoints();
+
 mainInterval = setInterval(() => {
     draw();
 }, 30);
