@@ -6,7 +6,12 @@ c.addEventListener('mousemove', function(evt) {
         mouseOffset.x = mousePos.x;
         mouseOffset.y = mousePos.y;
         draw();
+    } else {
+        checkForHover();
     }
+}, false);
+
+function checkForHover() {
     for (let i = 0; i < points.length; i++) {
         if (mousePos.x >= (points[i].x + cOffset.x - points[i].w) && mousePos.x <= (points[i].x + cOffset.x + points[i].w)) {
             if (mousePos.y >= (points[i].y + cOffset.y - points[i].h) && mousePos.y <= (points[i].y + cOffset.y + points[i].h)) {
@@ -17,8 +22,7 @@ c.addEventListener('mousemove', function(evt) {
             }
         }
     }
-    
-}, false);
+}
 
 function getMousePos(c, evt) {
     var rect = c.getBoundingClientRect();
